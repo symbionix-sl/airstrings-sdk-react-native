@@ -56,7 +56,7 @@ const useStrings = (a: AirStrings) =>
 2. Commit the resulting `airstrings/bundles/` directory to your repo.
 3. Pass the files via the `seed` option using Metro's `require`, as shown above.
 
-Seed bundles are untrusted input: every candidate runs the full Ed25519 verification pipeline plus `project_id` and locale checks. The highest verified revision wins across cache / seed / network (ties go to the cache), and a winning seed is persisted to the cache. A tampered or mismatched seed emits `strings:error` and is never served or cached; a missing seed is a silent no-op. Keep the committed seed fresh by running `airstrings bundles pull` in CI or as a pre-release step.
+Seed bundles are untrusted input: every candidate runs the full Ed25519 verification pipeline plus `project_id` and locale checks. The highest verified revision wins across cache / seed / network (ties go to the cache), and a winning seed is persisted to the cache. A tampered or wrong-project seed emits `strings:error` and is never served or cached; entries for other locales are skipped silently; a missing seed is a silent no-op. Keep the committed seed fresh by running `airstrings bundles pull` in CI or as a pre-release step.
 
 ## Caching & offline
 
