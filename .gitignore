@@ -1,0 +1,12 @@
+dist/
+node_modules/
+coverage/
+.DS_Store
+*.tsbuildinfo
+
+# Packed SDK tarball + generated demo artifacts
+*.tgz
+Demo/demo.config.generated.ts
+Demo/.demo-env
+Demo/airstrings/bundles/
+Demo/.stack-server.*
