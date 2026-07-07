@@ -10,7 +10,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@airstrings/react-native": "file:../airstrings-react-native-0.1.0.tgz",
+    "@airstrings/react-native": "file:../airstrings-react-native-0.1.1.tgz",
     "@react-native-async-storage/async-storage": "^3.1.1",
     "@react-native/new-app-screen": "0.86.0",
     "react": "19.2.3",
