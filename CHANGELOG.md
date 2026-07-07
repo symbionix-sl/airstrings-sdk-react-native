@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-07-07
+
+### Fixed
+- ICU plurals now render on the default Hermes engine (iOS and Android). Hermes lacks `Intl.PluralRules`, so `format()` previously returned the raw ICU pattern. The SDK now bundles a guarded `Intl.PluralRules` polyfill (`@formatjs/intl-pluralrules`, applied only when the native API is missing) with plural-rules data for `en`, `fr`, and `es`. `Intl.NumberFormat` (used to format `#`) is present natively on Hermes and is not polyfilled. Locales beyond the bundled set fall back to the raw pattern; add more in your app by installing `@formatjs/intl-pluralrules` and importing its `locale-data/<locale>` after the SDK.
+
 ## [0.1.0] - 2026-07-07
 
 ### Added
@@ -25,5 +30,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Known limitations
 - ICU plural and number formatting requires `Intl.PluralRules` / `Intl.NumberFormat`. The default Hermes engine on current React Native (iOS and Android) does not include them, so `format()` returns the raw ICU pattern. Add the FormatJS polyfills (`@formatjs/intl-getcanonicallocales`, `@formatjs/intl-pluralrules`, `@formatjs/intl-numberformat`) before the SDK to enable full formatting.
 
-[Unreleased]: https://github.com/symbionix-sl/airstrings-sdk-react-native/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/symbionix-sl/airstrings-sdk-react-native/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/symbionix-sl/airstrings-sdk-react-native/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/symbionix-sl/airstrings-sdk-react-native/releases/tag/v0.1.0

@@ -1,3 +1,5 @@
+import './intl-polyfill'
+
 export { AirStrings } from './airstrings'
 export type { AirStringsEvents } from './airstrings'
 export type { AirStringsConfig } from './airstrings-config'

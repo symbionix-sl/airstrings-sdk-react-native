@@ -72,7 +72,14 @@ A runnable demo lives in [`Demo/`](Demo/) — a single-screen app wired to a ful
 
 ## ICU formatting on Hermes
 
-ICU plural and number formatting requires `Intl.PluralRules` / `Intl.NumberFormat`. The default Hermes engine on current React Native (iOS and Android) does not include them, so `format()` returns the raw ICU pattern. To enable full formatting, add the FormatJS polyfills (`@formatjs/intl-getcanonicallocales`, `@formatjs/intl-pluralrules`, `@formatjs/intl-numberformat`) before the SDK.
+ICU plural formatting needs `Intl.PluralRules`, which the default Hermes engine (iOS and Android) does not ship. The SDK bundles a guarded `Intl.PluralRules` polyfill with plural-rules data for `en`, `fr`, and `es`, so plurals format out of the box for those locales — the polyfill is applied only when the native API is missing, so it's a no-op on engines that already provide it. `Intl.NumberFormat` (used to format `#`) is present natively on Hermes. For locales beyond the bundled set, `format()` falls back to the raw ICU pattern.
+
+To add locales, install `@formatjs/intl-pluralrules` in your app and import their plural-rules data after the SDK (it registers on the same polyfilled `Intl.PluralRules`):
+
+```ts
+import '@airstrings/react-native'
+import '@formatjs/intl-pluralrules/locale-data/de'
+```
 
 ## License
 

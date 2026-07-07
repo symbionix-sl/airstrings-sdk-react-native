@@ -8,7 +8,7 @@ export default defineConfig({
   clean: true,
   target: 'es2020',
   external: ['react-native', '@react-native-async-storage/async-storage'],
-  noExternal: ['intl-messageformat'],
+  noExternal: ['intl-messageformat', /^@formatjs\//],
   outExtension({ format }) {
     return {
       js: format === 'esm' ? '.mjs' : '.cjs',
