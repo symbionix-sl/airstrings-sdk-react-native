@@ -683,4 +683,37 @@ describe('AirStrings experiments', () => {
     expect(cta).toHaveLength(1)
     expect(cta[0]!.variant).toBe('treatment')
   })
+
+  it('onExposure registers a handler that fires with the full payload and returns an unsubscribe fn', async () => {
+    const privateKey = ed.utils.randomPrivateKey()
+    const publicKey = ed.getPublicKey(privateKey)
+    const { json, publicKeyBase64 } = makeExperimentsBundleJSON(privateKey, publicKey)
+
+    const store = new MemoryStore()
+    await store.save('proj_test12345678', 'env_test12345678', 'en', { json, etag: null })
+
+    const airstrings = new AirStrings(makeConfig({ publicKeys: [publicKeyBase64], store }))
+    const exposures: ExposureEvent[] = []
+    const unsubscribe = airstrings.onExposure((e) => exposures.push(e))
+    airstrings.setAssignmentId('user-42')
+    await airstrings.whenReady()
+
+    airstrings.t('cta')
+    await tick()
+
+    expect(exposures).toHaveLength(1)
+    expect(exposures[0]).toEqual({
+      key: 'cta',
+      experimentId: 'exp_cta',
+      variant: 'treatment',
+      locale: 'en',
+      assignmentId: 'user-42',
+    })
+
+    unsubscribe()
+    airstrings.t('banner')
+    await tick()
+
+    expect(exposures).toHaveLength(1)
+  })
 })

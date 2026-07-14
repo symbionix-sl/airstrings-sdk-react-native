@@ -65,7 +65,7 @@ Experiment-backed strings resolve to a variant deterministically from a stable a
 ```ts
 airstrings.setAssignmentId(userId) // or null to clear
 
-airstrings.on('experiment:exposure', ({ key, experimentId, variant, locale, assignmentId }) => {
+airstrings.onExposure(({ key, experimentId, variant, locale, assignmentId }) => {
   analytics.track('experiment_exposure', { key, experimentId, variant, locale, assignmentId })
 })
 
