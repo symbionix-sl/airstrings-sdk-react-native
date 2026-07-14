@@ -58,6 +58,22 @@ const useStrings = (a: AirStrings) =>
 
 Seed bundles are untrusted input: every candidate runs the full Ed25519 verification pipeline plus `project_id` and locale checks. The highest verified revision wins across cache / seed / network (ties go to the cache), and a winning seed is persisted to the cache. A tampered or wrong-project seed emits `strings:error` and is never served or cached; entries for other locales are skipped silently; a missing seed is a silent no-op. Keep the committed seed fresh by running `airstrings bundles pull` in CI or as a pre-release step.
 
+## String Variants (experiments)
+
+Experiment-backed strings resolve to a variant deterministically from a stable assignment id you supply — no server round-trip, no local state to persist. The same id always maps to the same variant. Experiment definitions are covered by the bundle's Ed25519 signature; if that verification fails, the SDK soft-fails to the base string values (experiment content is never served unverified).
+
+```ts
+airstrings.setAssignmentId(userId) // or null to clear
+
+airstrings.on('experiment:exposure', ({ key, experimentId, variant, locale, assignmentId }) => {
+  analytics.track('experiment_exposure', { key, experimentId, variant, locale, assignmentId })
+})
+
+airstrings.t('cta') // returns the assigned variant's value
+```
+
+`t(key)` / `format(key)` return the assigned variant's value; an `experiment:exposure` event fires once per unique `(key, experimentId, variant, assignmentId)` the first time that string is read, so you can forward exposures to your own analytics.
+
 ## Caching & offline
 
 - Bundles are cached per `{projectId}:{environmentId}:{locale}` and re-verified on every load.

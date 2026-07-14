@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-07-14
+
+### Added
+- String Variants: stable, stateless variant selection resolves each experiment's variant deterministically from a caller-supplied assignment id, with no server round-trip and no local state to persist.
+- `setAssignmentId(id: string | null): void` — set (or clear, with `null`) the stable assignment id used to select experiment variants.
+- `experiment:exposure` event carrying `ExposureEvent = { key, experimentId, variant, locale, assignmentId }` (all strings) — emitted when an experiment-backed string is served, so you can forward exposures to your own analytics.
+- Signed-experiments verification: experiment definitions are covered by the bundle's Ed25519 signature and verified before use. On verification failure the SDK soft-fails to the base string values — experiment content is never served unverified, and the public API still never throws.
+
 ## [0.1.1] - 2026-07-07
 
 ### Fixed
@@ -30,6 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Known limitations
 - ICU plural and number formatting requires `Intl.PluralRules` / `Intl.NumberFormat`. The default Hermes engine on current React Native (iOS and Android) does not include them, so `format()` returns the raw ICU pattern. Add the FormatJS polyfills (`@formatjs/intl-getcanonicallocales`, `@formatjs/intl-pluralrules`, `@formatjs/intl-numberformat`) before the SDK to enable full formatting.
 
-[Unreleased]: https://github.com/symbionix-sl/airstrings-sdk-react-native/compare/v0.1.1...HEAD
+[Unreleased]: https://github.com/symbionix-sl/airstrings-sdk-react-native/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/symbionix-sl/airstrings-sdk-react-native/compare/v0.1.1...v0.2.0
 [0.1.1]: https://github.com/symbionix-sl/airstrings-sdk-react-native/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/symbionix-sl/airstrings-sdk-react-native/releases/tag/v0.1.0
