@@ -46,6 +46,11 @@ echo "  environment: $ENV_ID"
 
 ENV_BASE="$BASE/v1/projects/$PROJECT_ID/environments/$ENV_ID"
 
+# Default env is created sealed; the demo publishes straight to it instead of promoting.
+echo "==> Unsealing environment..."
+curl -sf -X PATCH "$ENV_BASE/" -H "$AUTH" -H 'Content-Type: application/json' \
+  -d '{"is_sealed":false}' >/dev/null || { echo "ERROR: could not unseal environment"; exit 1; }
+
 echo "==> Reading environment public key..."
 PUBLIC_KEY_B64=$(curl -sf "$ENV_BASE/" -H "$AUTH" | jq -r '.public_key')
 [ -n "$PUBLIC_KEY_B64" ] && [ "$PUBLIC_KEY_B64" != "null" ] || { echo "ERROR: no public_key on environment"; exit 1; }
