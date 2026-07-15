@@ -74,6 +74,8 @@ airstrings.t('cta') // returns the assigned variant's value
 
 `t(key)` / `format(key)` return the assigned variant's value; an `experiment:exposure` event fires once per unique `(key, experimentId, variant, assignmentId)` the first time that string is read, so you can forward exposures to your own analytics.
 
+**Exposure fires once per session.** `onExposure` is deduped per SDK instance — a user re-entering the same screen won't fire it again; it resets on app relaunch (new instance) or when the assignment id changes. This is deliberate: exposure attributes a user to a variant (join to conversions by `assignmentId`). For per-render impression counts, track your own event on view appear.
+
 ## Caching & offline
 
 - Bundles are cached per `{projectId}:{environmentId}:{locale}` and re-verified on every load.
